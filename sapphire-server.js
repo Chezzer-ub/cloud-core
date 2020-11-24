@@ -1,27 +1,24 @@
 //*BUILT ON SAPPHIRE FOR SAPPHIRE
 const EventsEmitter = require('events');
 const { spawn } = require('child_process');
-const defaultsDeep = require('lodash.defaultsdeep');
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
 
 const defaultConfig = {
-  flavor: 'vanilla',
   core: {
-    jar: 'minecraft_server.jar',
-    args: ['-Xmx2G'],
-    pipeIO: true,
-    spawnOpts: {
-      stdio: ['pipe', 'pipe', 'inherit'],
-    },
+    jar: 'server.jar',
+    args: ['-Xmx2G', '-Xms1G'],
   },
+  remote: {
+    port: 35565
+  }
 };
 
 class SapphireServer extends EventsEmitter {
-  constructor(config = {}) {
+  constructor(config) {
     super();
-    this.config = defaultsDeep({}, config, defaultConfig);
+    this.config = config || defaultConfig);
     this.modules = [];
 
     process.on('exit', () => this.stop());
