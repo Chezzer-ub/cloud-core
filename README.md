@@ -11,6 +11,11 @@ File path should look like this:
 |-- start.js
 |-- server.properties
 ```
+Install the latest version of [NodeJS](https://nodejs.org/en/).
+Run:
+```
+npm i events child_process websocket http fs
+```
 
 ### How To Start
 Start a server with:
@@ -21,7 +26,7 @@ NOTE: You MUST start a server in the directory of the server.
 
 We advise using [pm2](https://pm2.keymetrics.io/) to manage servers.
 ```
-pm2 start -n creative
+pm2 start start.js -n creative
 ```
 
 #### You may also initiate actions on startup in the `start.js` file.
