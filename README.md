@@ -54,7 +54,7 @@ You can use apache proxy to achieve this:
 <IfModule mod_ssl.c>
 <VirtualHost *:443>
     ServerAdmin admin@site.com
-    ServerName ingame.site.com
+    ServerName server.site.com
 
     Header set Access-Control-Allow-Origin "https://site.com" # PLEASE USE THIS
 
@@ -62,8 +62,8 @@ You can use apache proxy to achieve this:
 
     ProxyPassMatch ^/(creative/ws)$  ws://localhost:25565/
     ProxyPass /creative http://localhost:25565/
-    # Now websocket will be wss://site.com/creative/ws/
-    # Now GET & POST will be https://site.com/creative/
+    # Now websocket will be wss://server.site.com/creative/ws/
+    # Now GET & POST will be https://server.site.com/creative/
 
     Redirect permanent / https://site.com/
 
