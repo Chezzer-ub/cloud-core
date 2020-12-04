@@ -18,7 +18,7 @@ const defaultConfig = {
 class SapphireServer extends EventsEmitter {
   constructor(config) {
     super();
-    this.config = config || defaultConfig);
+    this.config = config || defaultConfig;
     this.modules = [];
 
     process.on('exit', () => this.stop());
