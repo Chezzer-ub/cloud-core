@@ -9,6 +9,7 @@ const defaultConfig = {
   core: {
     jar: 'server.jar',
     args: ['-Xmx2G', '-Xms1G'],
+    authorization: ""
   },
   remote: {
     port: 35565
@@ -48,47 +49,52 @@ class SapphireServer extends EventsEmitter {
       var server = this;
       //define ws server
       var httpServer = http.createServer(function(req, res) {
-        if (req.method == 'POST') {
-          let body = '';
-
-          req.on('data', chunk => {
-            body += chunk.toString();
-          });
-
-          req.on('end', () => {
-            try {
-              JSON.parse(body);
-            } catch (e) {
-                return false;
+        if (req.headers.authorization == "Basic "+btoa(this.config.core.authorization)) {
+          if (req.method == 'POST') {
+            let body = '';
+  
+            req.on('data', chunk => {
+              body += chunk.toString();
+            });
+  
+            req.on('end', () => {
+              try {
+                JSON.parse(body);
+              } catch (e) {
+                  return false;
+              }
+              body = JSON.parse(body);
+              if (body.command) {
+                server.send(body.command)
+              }
+            });
+            res.end();
+          } else {
+            if (fs.existsSync("logs/latest.log")) {
+              let last = [];
+              const log = fs.readFileSync("logs/latest.log", "utf8");
+              const lines = log.split(/\r?\n/);
+              lines.forEach((line, i) => {
+                const index = lines.length-i;
+                if (index >= lines.length-100) {
+                  if (lines[index]) {
+                    last.push(lines[index]);
+                  }
+                }
+              });
+            
+              let response = "";
+              last.reverse()
+              last.forEach((item) => {
+                response += `${item}\n`;
+              })
+              res.write(response)
             }
-            body = JSON.parse(body);
-            if (body.command) {
-              server.send(body.command)
-            }
-          });
-          res.end();
-        } else {
-	  if (fs.existsSync("logs/latest.log")) {
-      let last = [];
-      const log = fs.readFileSync("logs/latest.log", "utf8");
-      const lines = log.split(/\r?\n/);
-      lines.forEach((line, i) => {
-        const index = lines.length-i;
-        if (index >= lines.length-100) {
-          if (lines[index]) {
-            last.push(lines[index]);
           }
+        } else {
+          res.send("Unauthorized");
+          res.end();
         }
-      });
-
-      let response = "";
-      last.reverse()
-      last.forEach((item) => {
-        response += `${item}\n`;
-      })
-	    res.write(response)
-	  }
-	}
         res.end();
       }).listen(this.config.remote.port, () => {
         console.log("Server remote running on port " + this.config.remote.port);
