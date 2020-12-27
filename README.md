@@ -55,14 +55,16 @@ Authorization: Basic <auth code here>
 #### More on websockets...
 Having multiple ports can be annoying, so running the websockets through a webserver can not only orginize them but also allow secure websocket connections.
 
-You can use apache proxy to achieve this:
+It is strongly advised that you do this since non-secure websockets can easily be found and sniffed.
+
+Here is a base apache config that can be used to achieve this. It assumes you have a domain and that you can add a subdomain to that.
 ```
 <IfModule mod_ssl.c>
 <VirtualHost *:443>
     ServerAdmin admin@site.com
-    ServerName server.site.com
+    ServerName minecraft.site.com
 
-    Header set Access-Control-Allow-Origin "https://site.com" # PLEASE USE THIS
+    Header set Access-Control-Allow-Origin "https://site.com" # PLEASE USE THIS (Only allows connections from certain sites)
 
     ProxyRequests off
 
@@ -71,8 +73,12 @@ You can use apache proxy to achieve this:
     # Now websocket will be wss://server.site.com/creative/ws/
     # Now GET & POST will be https://server.site.com/creative/
 
-    Redirect permanent / https://site.com/
+    # Unfortunately you will have to add a new entry into this file every time you add a server.
 
+    Redirect permanent / https://site.com/ # Redirects any traffic who have found the subdomain back to your site.
+
+    # Make sure you use encryption or this whole process will be a waste of time.
+    # The best in my opinion is Cert Bot (google it), It works very well with apache.
     SSLCertificateFile /etc/letsencrypt/live/...
     SSLCertificateKeyFile /etc/letsencrypt/live/...
     Include /etc/letsencrypt/options-ssl-apache.conf
