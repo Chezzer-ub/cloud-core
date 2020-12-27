@@ -110,13 +110,17 @@ class SapphireServer extends EventsEmitter {
       var server = this;
 
       this.wsServer.on('request', function(req) {
-        var connection = req.accept();
-        server.on('console', line => {
-          connection.sendUTF(line);
-        })
-        connection.on('message', function(message) {
-          server.send(JSON.parse(message.utf8Data).command)
-        })
+        if (req.headers.authorization == "Basic "+config.core.authorization) {
+          var connection = req.accept();
+          server.on('console', line => {
+            connection.sendUTF(line);
+          })
+          connection.on('message', function(message) {
+            server.send(JSON.parse(message.utf8Data).command)
+          })
+        } else {
+          req.reject(403, "Unauthorized, please check docs for help on authorizing requests.");
+        }
       })
     }
 
