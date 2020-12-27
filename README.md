@@ -43,8 +43,14 @@ setTimeout(() => {
 ### How To Access
 Accessing a server can be done by 3 methods:
 1. GET request to the remote port, it will return the last 100 lines of the console.
-2. POST request to the remote port with JSON in a string: `{'command': 'say hi'}`.
-3. Look at `example.html` on how you can open a websocket to the remote port.
+2. POST request to the remote port with JSON: `{'command': 'say hi'}`.
+3. Look at `example.html` on how you can open a websocket to the remote port and for jQuery requests.
+
+#### Authentication
+All requests have to have a authorization header attached. You can change the code in the server settings in `start.js`
+```
+Authorization: Basic <auth code here>
+```
 
 #### More on websockets...
 Having multiple ports can be annoying, so running the websockets through a webserver can not only orginize them but also allow secure websocket connections.
