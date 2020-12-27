@@ -60,14 +60,9 @@ class SapphireServer extends EventsEmitter {
             });
   
             req.on('end', () => {
-              try {
-                JSON.parse(body);
-              } catch (e) {
-                  return false;
-              }
-              body = JSON.parse(body);
-              if (body.command) {
-                server.send(body.command)
+              if (body) {
+                let command = body.split("command=")[1];
+                server.send(command)
               }
             });
             res.end();
