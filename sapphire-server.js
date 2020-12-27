@@ -31,12 +31,11 @@ class SapphireServer extends EventsEmitter {
     console.log("Starting server, please wait...")
 
     const args = this.config.core.args.concat('-jar', this.config.core.jar, 'nogui');
+    const config = this.config;
     this.spawn = spawn('java', args, this.config.core.spawnOpts);
 
-    if (this.config.core.pipeIO) {
-      this.spawn.stdout.pipe(process.stdout);
-      process.stdin.pipe(this.spawn.stdin);
-    }
+    this.spawn.stdout.pipe(process.stdout);
+    process.stdin.pipe(this.spawn.stdin);
 
     this.spawn.stdout.on('data', (d) => {
       // Emit console
@@ -49,10 +48,13 @@ class SapphireServer extends EventsEmitter {
       var server = this;
       //define ws server
       var httpServer = http.createServer(function(req, res) {
-        if (req.headers.authorization == "Basic "+btoa(this.config.core.authorization)) {
+        res.setHeader("Access-Control-Allow-Origin", "*")
+        res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+        res.setHeader("Access-Control-Allow-Headers","*")
+        if (req.headers.authorization == "Basic "+config.core.authorization) {
           if (req.method == 'POST') {
             let body = '';
-  
+
             req.on('data', chunk => {
               body += chunk.toString();
             });
@@ -92,8 +94,7 @@ class SapphireServer extends EventsEmitter {
             }
           }
         } else {
-          res.send("Unauthorized");
-          res.end();
+          res.end("Unauthorized");
         }
         res.end();
       }).listen(this.config.remote.port, () => {
