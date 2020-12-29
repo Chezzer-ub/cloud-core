@@ -8,7 +8,10 @@
   crossorigin="anonymous"></script>
 <script>
     function cmd() {
-      let obj = {"command": $("[name=cmd]").val()}
+      let obj = {
+        "command": $("[name=cmd]").val(),
+        "authorization": "auth code here"
+      }
       webSocket.send(JSON.stringify(obj))
       $("[name=cmd]").val("")
     }
