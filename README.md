@@ -47,10 +47,12 @@ Accessing a server can be done by 3 methods:
 3. Look at `example.html` on how you can open a websocket to the remote port and for jQuery requests.
 
 #### Authentication
-All requests have to have a authorization header attached. You can change the code in the server settings in `start.js`
+All GET & POST requests have to have a authorization header attached. You can change the code in the server settings in `start.js`
 ```
 Authorization: Basic <auth code here>
 ```
+
+For websockets please include a `authorization` feild inside the request body for each command. See `example.html` for more.
 
 #### More on websockets...
 Having multiple ports can be annoying, so running the websockets through a webserver can not only orginize them but also allow secure websocket connections.
