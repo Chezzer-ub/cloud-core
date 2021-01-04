@@ -61,8 +61,12 @@ class SapphireServer extends EventsEmitter {
   
             req.on('end', () => {
               if (body) {
-                let command = body.split("command=")[1];
-                server.send(command)
+                let command = decodeURIComponent(body);
+                command = command.replace(/\+/g," ");
+                command = command.split("command=")[1];
+                setTimeout(() => {
+                  server.send(command)
+                }, 200)
               }
             });
             res.end();
@@ -105,17 +109,19 @@ class SapphireServer extends EventsEmitter {
       var server = this;
 
       this.wsServer.on('request', function(req) {
-        if (req.headers.authorization == "Basic "+config.core.authorization) {
-          var connection = req.accept();
-          server.on('console', line => {
-            connection.sendUTF(line);
-          })
-          connection.on('message', function(message) {
-            server.send(JSON.parse(message.utf8Data).command)
-          })
-        } else {
-          req.reject(403, "Unauthorized, please check docs for help on authorizing requests.");
-        }
+        
+        var connection = req.accept();
+        server.on('console', line => {
+          connection.sendUTF(line);
+        })
+        connection.on('message', function(message) {
+          let body = JSON.parse(message.utf8Data);
+          if (body.authorization == config.core.authorization) {
+            server.send(body.command)
+          } else {
+            connection.sendUTF("Unauthorized");
+          }
+        })
       })
     }
 
@@ -162,4 +168,5 @@ class SapphireServer extends EventsEmitter {
 }
 
 module.exports = SapphireServer;
+
 
