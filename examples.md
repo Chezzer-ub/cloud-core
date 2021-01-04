@@ -1,5 +1,25 @@
 ## Code Examples
 
+### Javascript Websocket
+Establish connection:
+
+```javascript
+webSocket = new WebSocket('ws://localhost:35565');
+webSocket.onmessage = (message) => {
+    let line = message.data;
+    console.log(line)
+};
+```
+
+Send a command:
+```javascript
+let obj = {
+    "command": "about",
+    "authorization": "auth code here"
+}
+webSocket.send(JSON.stringify(obj))
+```
+
 ### jQuery
 Send a command without websocket:
 
@@ -57,3 +77,8 @@ $console = file_get_contents("http://localhost:35565/", false, stream_context_cr
 
 //Best outputed with <pre>
 ```
+
+## Glossary
+
+- `<auth code here>` is referring to the auth code you specified inside of your start.js file. Make sure you include the word `Basic ` at the start.
+- `"about"` is the default command I am using.
