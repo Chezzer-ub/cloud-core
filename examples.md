@@ -1,6 +1,6 @@
 ## Code Examples
 
-### JS
+### jQuery
 Send a command without websocket:
 
 ```javascript
