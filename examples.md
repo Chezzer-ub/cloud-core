@@ -21,7 +21,7 @@ webSocket.send(JSON.stringify(obj))
 ```
 
 ### jQuery
-Send a command without websocket:
+Send a command:
 
 ```javascript
 $.ajax({
@@ -33,7 +33,7 @@ $.ajax({
   ...
 });
 ```
-Get console without a websocket:
+Get console:
 
 ```javascript
 $.ajax({
@@ -45,7 +45,7 @@ $.ajax({
 ```
 
 ### PHP
-Send a command without websocket:
+Send a command:
 
 ```php
 $ch = curl_init();
@@ -63,7 +63,7 @@ $server_output = curl_exec($ch);
 
 curl_close ($ch);
 ```
-Get console without a websocket:
+Get console:
 
 ```php
 $context = [
