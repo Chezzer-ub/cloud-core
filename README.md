@@ -44,7 +44,8 @@ setTimeout(() => {
 Accessing a server can be done by 3 methods:
 1. GET request to the remote port, it will return the last 100 lines of the console.
 2. POST request to the remote port with JSON: `{'command': 'say hi'}`.
-3. Look at `examples.md` for code examples and `example.html` for how to use it with html.
+3. Open a websocket[^1].
+[^1]: Look at `examples.md` for code examples and `example.html` for how to use it with html.
 
 #### Authentication
 All GET & POST requests have to have a authorization header attached. You can change the code in the server settings in `start.js`
