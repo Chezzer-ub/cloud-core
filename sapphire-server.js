@@ -9,7 +9,9 @@ const defaultConfig = {
   core: {
     jar: 'server.jar',
     args: ['-Xmx2G', '-Xms1G'],
-    authorization: ""
+    authorization: "",
+    restartTime: 10,
+    backups: false
   },
   remote: {
     port: 35565
@@ -24,6 +26,15 @@ class SapphireServer extends EventsEmitter {
 
     process.on('exit', () => this.stop());
     process.on('close', () => this.stop());
+
+    if (this.config.core.backups) {
+      setTimeout(() => {
+        let d = new Date();
+        if (d.getDay() == 0 && d.getHours() == 0 && d.getSeconds() < 59 && d.getMinutes() == 0) {
+          spawn(`zip -r backup/${d.toString().replace(/ /g, "-")}.zip *`);
+        }
+      }, 60000)
+    }
   }
 
   start() {
@@ -159,7 +170,7 @@ class SapphireServer extends EventsEmitter {
         setTimeout(() => {
           this.start();
           resolve()
-        }, 10000)
+        }, this.config.core.restartTime*1000)
       } else {
         this.spawn.stdin.write(`${command}\n`, () => resolve());
       }
