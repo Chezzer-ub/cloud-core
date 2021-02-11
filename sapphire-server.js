@@ -175,6 +175,7 @@ class SapphireServer extends EventsEmitter {
         }, this.config.core.restartTime*1000)
       } else if (command == "dkill") {
         this.wsServer.send(`[Sapphire Server] Restarting daemon (${process.pid})...`)
+        this.stop();
         setTimeout(function () {
           process.on("exit", function () {
               require("child_process").spawn(process.argv.shift(), process.argv, {
@@ -184,7 +185,7 @@ class SapphireServer extends EventsEmitter {
               });
           });
           process.exit();
-        }, 1000);
+        }, this.config.core.restartTime*1000);
       } else {
         this.spawn.stdin.write(`${command}\n`, () => resolve());
       }
