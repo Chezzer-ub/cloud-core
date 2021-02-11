@@ -163,14 +163,28 @@ class SapphireServer extends EventsEmitter {
   send(command) {
     return new Promise((resolve) => {
       if (command == "start" || command == "/start") {
+        this.wsServer.send("[Sapphire Server] Starting server...")
         this.start();
         resolve()
       } else if (command == "restart" || command == "/restart") {
+        this.wsServer.send("[Sapphire Server] Restarting server...")
         this.stop();
         setTimeout(() => {
           this.start();
           resolve()
         }, this.config.core.restartTime*1000)
+      } else if (command == "dkill") {
+        this.wsServer.send(`[Sapphire Server] Restarting daemon (${process.pid})...`)
+        setTimeout(function () {
+          process.on("exit", function () {
+              require("child_process").spawn(process.argv.shift(), process.argv, {
+                  cwd: process.cwd(),
+                  detached : true,
+                  stdio: "inherit"
+              });
+          });
+          process.exit();
+        }, 1000);
       } else {
         this.spawn.stdin.write(`${command}\n`, () => resolve());
       }
