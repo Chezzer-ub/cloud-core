@@ -1,4 +1,3 @@
-//*BUILT ON SAPPHIRE FOR SAPPHIRE
 const EventsEmitter = require('events');
 const { spawn } = require('child_process');
 const WebSocketServer = require('websocket').server;
@@ -11,7 +10,8 @@ const defaultConfig = {
     args: ['-Xmx2G', '-Xms1G'],
     authorization: "",
     restartTime: 10,
-    backups: false
+    backups: false,
+    serverPort: 25565
   },
   remote: {
     port: 35565
@@ -41,9 +41,10 @@ class SapphireServer extends EventsEmitter {
     if (this.spawn) this.stop();
     console.log("Starting server, please wait...")
 
-    const args = this.config.core.args.concat('-jar', this.config.core.jar, 'nogui');
+    let args = this.config.core.args.concat('-jar', this.config.core.jar);
+    args = args.concat('--port', this.config.core.port, '--nogui')
     const config = this.config;
-    this.spawn = spawn('java', args, this.config.core.spawnOpts);
+    this.spawn = spawn('java', args);
 
     this.spawn.stdout.pipe(process.stdout);
     process.stdin.pipe(this.spawn.stdin);
