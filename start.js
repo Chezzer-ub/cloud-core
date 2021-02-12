@@ -5,7 +5,6 @@ const server = new SapphireServer({
     args: ['-Xmx12G', '-Xms12G'], //Server Ram
     port: 25533, //Minecraft Server Port
     authorization: "b2x3AqYkjT2T6F5G", //HTTP Auth COde
-    restartTime: 10, //time in seconds that the server will wait to restart
     backups: true //enable the backup feature (backs up the server every week)
   },
   remote: {
