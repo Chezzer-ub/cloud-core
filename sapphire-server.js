@@ -1,3 +1,4 @@
+//*BUILT ON SAPPHIRE FOR SAPPHIRE
 const EventsEmitter = require('events');
 const { spawn } = require('child_process');
 const WebSocketServer = require('websocket').server;
@@ -44,6 +45,7 @@ class SapphireServer extends EventsEmitter {
     let args = this.config.core.args.concat('-jar', this.config.core.jar);
     args = args.concat('--port', this.config.core.port, '--nogui')
     const config = this.config;
+console.log(args)
     this.spawn = spawn('java', args);
 
     this.spawn.stdout.pipe(process.stdout);
@@ -164,18 +166,15 @@ class SapphireServer extends EventsEmitter {
   send(command) {
     return new Promise((resolve) => {
       if (command == "start" || command == "/start") {
-        this.wsServer.send("[Sapphire Server] Starting server...")
         this.start();
         resolve()
       } else if (command == "restart" || command == "/restart") {
-        this.wsServer.send("[Sapphire Server] Restarting server...")
         this.stop();
         setTimeout(() => {
           this.start();
           resolve()
         }, this.config.core.restartTime*1000)
       } else if (command == "dkill") {
-        this.wsServer.send(`[Sapphire Server] Restarting daemon (${process.pid})...`)
         this.stop();
         setTimeout(function () {
           process.on("exit", function () {
