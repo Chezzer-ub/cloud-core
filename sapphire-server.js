@@ -4,13 +4,13 @@ const { spawn } = require('child_process');
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
+let serverConfig = {};
 
 const defaultConfig = {
   core: {
     jar: 'server.jar',
     args: ['-Xmx2G', '-Xms1G'],
     authorization: "",
-    restartTime: 10,
     backups: false,
     serverPort: 25565
   },
@@ -23,6 +23,7 @@ class SapphireServer extends EventsEmitter {
   constructor(config) {
     super();
     this.config = config || defaultConfig;
+    serverConfig = config;
     this.modules = [];
 
     process.on('exit', () => this.stop());
@@ -173,7 +174,7 @@ console.log(args)
         setTimeout(() => {
           this.start();
           resolve()
-        }, this.config.core.restartTime*1000)
+        }, 10000)
       } else if (command == "dkill") {
         this.stop();
         setTimeout(function () {
@@ -185,7 +186,7 @@ console.log(args)
               });
           });
           process.exit();
-        }, this.config.core.restartTime*1000);
+        }, 10000);
       } else {
         this.spawn.stdin.write(`${command}\n`, () => resolve());
       }
@@ -194,5 +195,4 @@ console.log(args)
 }
 
 module.exports = SapphireServer;
-
 
