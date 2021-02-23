@@ -1,6 +1,6 @@
 //*BUILT ON SAPPHIRE FOR SAPPHIRE
 const EventsEmitter = require('events');
-const { spawn } = require('child_process');
+const { spawn, exec } = require('child_process');
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
@@ -32,11 +32,31 @@ class SapphireServer extends EventsEmitter {
     if (this.config.core.backups) {
       setTimeout(() => {
         let d = new Date();
-        if (d.getDay() == 0 && d.getHours() == 0 && d.getSeconds() < 59 && d.getMinutes() == 0) {
-          spawn(`zip -r backup/${d.toString().replace(/ /g, "-")}.zip *`);
+        if (d.getDay() == 0 && d.getHours() == 0 && d.getSeconds() <= 59 && d.getMinutes() == 0) {
+          this.backup()
         }
       }, 60000)
     }
+  }
+
+  backup() {
+    let d = new Date();
+    let name = d.toString().replace(/ /g, "-").split("(")[0]+".zip"
+    let backup = exec(`zip -r ${name} *`, {maxBuffer: 1024 * 999999999}, (error, stdout, stderr) => {
+    //let backup = exec(`cd..;sleep 10;ls`, (error, stdout, stderr) => {
+      if (error) {
+        console.log(error.stack);
+        console.log('Error code: '+error.code);
+        console.log('Signal received: '+error.signal);
+      }
+    });
+    
+    backup.on('exit', function (code) {
+      setTimeout(() => {
+        exec(`mv ${name} backup/${name}`, {maxBuffer: 1024 * 999999999})
+      }, 2000)
+      fs.appendFileSync("logs/latest.log", `Made backup (${name})`)
+    });
   }
 
   start() {
@@ -44,9 +64,9 @@ class SapphireServer extends EventsEmitter {
     console.log("Starting server, please wait...")
 
     let args = this.config.core.args.concat('-jar', this.config.core.jar);
-    args = args.concat('--port', this.config.core.port, '--nogui')
+    args = args.concat('--port', this.config.core.port, 'nogui')
     const config = this.config;
-console.log(args)
+
     this.spawn = spawn('java', args);
 
     this.spawn.stdout.pipe(process.stdout);
@@ -178,13 +198,7 @@ console.log(args)
       } else if (command == "dkill") {
         this.stop();
         setTimeout(function () {
-          process.on("exit", function () {
-              require("child_process").spawn(process.argv.shift(), process.argv, {
-                  cwd: process.cwd(),
-                  detached : true,
-                  stdio: "inherit"
-              });
-          });
+          resolve()
           process.exit();
         }, 10000);
       } else {
