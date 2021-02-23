@@ -7,15 +7,15 @@ Put `start.js` inside your server folder. Make one for every server you control.
 File path should look like this:
 ```
 |- sapphire-server.js
-|- creative
+|- creative/
 |-- start.js
-|-- server.properties
+|-- server.jar
 ```
 Make sure you have the latest version of [NodeJS](https://nodejs.org/en/) and [Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-debian-10)
 
 Run:
 ```
-npm i events child_process websocket http fs
+npm i events child_process websocket http axios fs
 ```
 
 ### How To Start
