@@ -36,6 +36,7 @@ For example:
 server.start();
 server.send("say Started Server");
 setTimeout(() => {
+  server.backup() //backs up the server into backup folder.
   server.stop()
 }, 10000)
 ```
