@@ -39,7 +39,6 @@ class SapphireServer extends EventsEmitter {
         }
       }, 60000)
     }
-    this.backup();
     axios.get('http://api.github.com/repos/Sapphire-Connect/sapphire-server/commits')
       .then(function (response) {
         let data = response.data;
