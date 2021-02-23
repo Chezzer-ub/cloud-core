@@ -39,7 +39,11 @@ class SapphireServer extends EventsEmitter {
         }
       }, 60000)
     }
-    axios.get('http://api.github.com/repos/Sapphire-Connect/sapphire-server/commits')
+    this.checkUpdates()
+  }
+  
+  checkUpdates() {
+    axios.get('https://api.github.com/repos/Sapphire-Connect/sapphire-server/commits?path=sapphire-server.js&per_page=1')
       .then(function (response) {
         let data = response.data;
         if (!fs.existsSync("sapphire-server.json")) {
@@ -218,6 +222,7 @@ class SapphireServer extends EventsEmitter {
         })
       })
     }
+    this.checkUpdates()
 
     return this;
   }
