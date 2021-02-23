@@ -58,7 +58,7 @@ class SapphireServer extends EventsEmitter {
           }
           if (data[0].sha !== version) {
             setTimeout(() => {
-              messageHandler.emit('message', `A new version of Sapphire Server is out! Please follow the update instructions on the README. https://github.com/Sapphire-Connect/sapphire-server. /tWARN`)
+              messageHandler.emit('message', `OUTDATED VERSION! A new version of Sapphire Server is out! Please follow the update instructions on the README. https://github.com/Sapphire-Connect/sapphire-server. /tWARN`)
               console.log("A new version of Sapphire Server is out! Please follow the update instructions on the README. https://github.com/Sapphire-Connect/sapphire-server")
             }, 10000)
           }
@@ -258,6 +258,10 @@ class SapphireServer extends EventsEmitter {
           this.start();
           resolve()
         }, 10000)
+      } else if (command == "backup" || command == "/backup") {
+        messageHandler.emit('message', `Received backup command from {REMOTE_IP}. /tINFO`)
+        this.backup();
+        resolve();
       } else if (command == "dkill") {
         messageHandler.emit('message', `Received daemon kill command from {REMOTE_IP}. /tINFO`)
         this.stop();
