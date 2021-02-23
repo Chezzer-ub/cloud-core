@@ -4,7 +4,9 @@ const { spawn, exec } = require('child_process');
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
+const axios = require('axios');
 let serverConfig = {};
+var messageHandler = new EventsEmitter();
 
 const defaultConfig = {
   core: {
@@ -37,11 +39,39 @@ class SapphireServer extends EventsEmitter {
         }
       }, 60000)
     }
+    this.backup();
+    axios.get('http://api.github.com/repos/Sapphire-Connect/sapphire-server/commits')
+      .then(function (response) {
+        let data = response.data;
+        if (!fs.existsSync("sapphire-server.json")) {
+            fs.writeFileSync("sapphire-server.json", `
+              {
+                "version": "${data[0].sha}"
+              }
+            `)
+        } else {
+          let version = "";
+          try {
+            version = JSON.parse(fs.readFileSync("sapphire-server.json"))['version'];
+          } catch (e) {
+            console.log(e);
+          }
+          if (data[0].sha !== version) {
+            setTimeout(() => {
+              messageHandler.emit('message', `A new version of Sapphire Server is out! Please follow the update instructions on the README. https://github.com/Sapphire-Connect/sapphire-server. /tWARN`)
+              console.log("A new version of Sapphire Server is out! Please follow the update instructions on the README. https://github.com/Sapphire-Connect/sapphire-server")
+            }, 10000)
+          }
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   }
 
   backup() {
     let d = new Date();
-    let name = d.toString().replace(/ /g, "-").split("(")[0]+".zip"
+    let name = d.toString().replace(/ /g, "-").split("-(")[0]+".zip"
     let backup = exec(`zip -r ${name} *`, {maxBuffer: 1024 * 999999999}, (error, stdout, stderr) => {
     //let backup = exec(`cd..;sleep 10;ls`, (error, stdout, stderr) => {
       if (error) {
@@ -56,11 +86,13 @@ class SapphireServer extends EventsEmitter {
         exec(`mv ${name} backup/${name}`, {maxBuffer: 1024 * 999999999})
       }, 2000)
       fs.appendFileSync("logs/latest.log", `Made backup (${name})`)
+      messageHandler.emit('message', `Made backup of whole server (${name}). /tINFO`)
     });
   }
 
   start() {
     if (this.spawn) this.stop();
+    messageHandler.emit('message', `Starting Server. /tINFO`)
     console.log("Starting server, please wait...")
 
     let args = this.config.core.args.concat('-jar', this.config.core.jar);
@@ -149,6 +181,34 @@ class SapphireServer extends EventsEmitter {
         server.on('console', line => {
           connection.sendUTF(line);
         })
+
+        messageHandler.on('message', msg => {
+          let data = msg.split("/t");
+          let type;
+          if (!data[1]) {
+            type = "INFO"
+          } else {
+            type = data[1];
+          }
+
+          msg = data[0];
+
+          let d = new Date();
+          let hours = d.getHours();
+          let mins  = d.getMinutes();
+          let secs  = d.getSeconds();
+          if (hours < 10) {
+            hours = "0"+hours;
+          }
+          if (mins < 10) {
+            mins = "0"+mins;
+          }
+          if (secs < 10) {
+            secs = "0"+secs;
+          }
+          connection.sendUTF(`[${hours}:${mins}:${secs} ${type}]: [Sapphire Server] ${msg.replace("{REMOTE_IP}", connection.remoteAddress)}`);
+        })
+
         connection.on('message', function(message) {
           let body = JSON.parse(message.utf8Data);
           if (body.authorization == config.core.authorization) {
@@ -164,6 +224,7 @@ class SapphireServer extends EventsEmitter {
   }
 
   stop() {
+    messageHandler.emit('message', `Stopping Server. /tINFO`)
     if (this.spawn) {
 
       this.spawn.kill();
@@ -187,21 +248,25 @@ class SapphireServer extends EventsEmitter {
   send(command) {
     return new Promise((resolve) => {
       if (command == "start" || command == "/start") {
+        messageHandler.emit('message', `Received start command from {REMOTE_IP}. /tINFO`)
         this.start();
         resolve()
       } else if (command == "restart" || command == "/restart") {
+        messageHandler.emit('message', `Received stop command from {REMOTE_IP}. /tINFO`)
         this.stop();
         setTimeout(() => {
           this.start();
           resolve()
         }, 10000)
       } else if (command == "dkill") {
+        messageHandler.emit('message', `Received daemon kill command from {REMOTE_IP}. /tINFO`)
         this.stop();
         setTimeout(function () {
           resolve()
           process.exit();
         }, 10000);
       } else {
+        messageHandler.emit('message', `Received "${command}" from {REMOTE_IP}. /tINFO`)
         this.spawn.stdin.write(`${command}\n`, () => resolve());
       }
     });
