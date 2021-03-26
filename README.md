@@ -6,10 +6,10 @@ Put `sapphire-server.js` inside the top folder of all servers you want to contro
 Put `start.js` inside your server folder. Make one for every server you control.
 File path should look like this:
 ```
-|- sapphire-server.js
-|- creative/
-|-- start.js
-|-- server.jar
+sapphire-server.js
+creative/
+├── start.js
+└── server.jar
 ```
 Make sure you have the latest version of [NodeJS](https://nodejs.org/en/) and [Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-debian-10)
 
