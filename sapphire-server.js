@@ -1,4 +1,4 @@
-//*BUILT ON SAPPHIRE FOR SAPPHIRE
+//* Sapphire Server was originally created for Sapphire Adventures however has since been open sourced at github.com/Sapphire-Connect
 const EventsEmitter = require('events');
 const { spawn, exec } = require('child_process');
 const WebSocketServer = require('websocket').server;
