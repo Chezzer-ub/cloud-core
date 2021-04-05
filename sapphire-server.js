@@ -261,7 +261,7 @@ class SapphireServer extends EventsEmitter {
         setTimeout(() => {
           this.start();
           resolve()
-        }, 10000)
+        }, this.config.core.restartTime*1000 || 10000)
       } else if (command == "backup" || command == "/backup") {
         messageHandler.emit('message', `Received backup command from {REMOTE_IP}. /tINFO`)
         this.backup();
@@ -272,7 +272,7 @@ class SapphireServer extends EventsEmitter {
         setTimeout(function () {
           resolve()
           process.exit();
-        }, 10000);
+        }, this.config.core.restartTime*1000 || 10000);
       } else {
         messageHandler.emit('message', `Received "${command}" from {REMOTE_IP}. /tINFO`)
         this.spawn.stdin.write(`${command}\n`, () => resolve());
