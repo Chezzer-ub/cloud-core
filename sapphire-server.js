@@ -14,7 +14,8 @@ const defaultConfig = {
     args: ['-Xmx2G', '-Xms1G'],
     authorization: "",
     backups: false,
-    serverPort: 25565
+    serverPort: 25565,
+    restartTime: 10000
   },
   remote: {
     port: 35565
