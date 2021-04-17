@@ -76,7 +76,7 @@ class SapphireServer extends EventsEmitter {
   backup() {
     let d = new Date();
     let name = d.toString().replace(/ /g, "-").split("-(")[0]+".zip"
-    let backup = exec(`zip -r ${name} *`, {maxBuffer: 1024 * 999999999}, (error, stdout, stderr) => {
+    let backup = exec(`zip -r ${name} * -x *backup*`, {maxBuffer: 1024 * 999999999}, (error, stdout, stderr) => {
     //let backup = exec(`cd..;sleep 10;ls`, (error, stdout, stderr) => {
       if (error) {
         console.log(error.stack);
