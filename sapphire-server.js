@@ -15,7 +15,7 @@ const defaultConfig = {
     authorization: "",
     backups: false,
     serverPort: 25565,
-    restartTime: 10000
+    restartTime: 10
   },
   remote: {
     port: 35565
