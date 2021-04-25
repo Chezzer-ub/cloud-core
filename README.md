@@ -5,7 +5,7 @@
 <h2>Sapphire Server</h2>
 An open-source way to run Minecraft easily on linux using JavaScript.
 
-[![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/6xfh.svg)](https://betteruptime.com/?utm_source=status_badge)
+![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/6xfh.svg)
 </center>
 
 ----
