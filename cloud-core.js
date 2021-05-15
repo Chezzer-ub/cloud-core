@@ -4,7 +4,6 @@ const WebSocketServer = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
 const axios = require('axios');
-let serverConfig = {};
 var messageHandler = new EventsEmitter();
 
 const defaultConfig = {
