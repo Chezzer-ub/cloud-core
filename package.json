@@ -23,5 +23,13 @@
   "bugs": {
     "url": "https://github.com/Chezzer-ub/cloud-core/issues"
   },
-  "homepage": "https://github.com/Chezzer-ub/cloud-core#readme"
+  "homepage": "https://github.com/Chezzer-ub/cloud-core#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "child_process": "^1.0.2",
+    "events": "^3.3.0",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "websocket": "^1.0.34"
+  }
 }
