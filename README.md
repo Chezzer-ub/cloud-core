@@ -6,11 +6,11 @@ An open-source way to run Minecraft easily on linux using JavaScript.
 ----
 
 ### Install
-Put `sapphire-server.js` inside the top folder of all servers you want to control.
+Put `cloud-core.js` inside the top folder of all servers you want to control.
 Put `start.js` inside your server folder. Make one for every server you control.
 File path should look like this:
 ```
-sapphire-server.js
+cloud-core.js
 creative/
 ├── start.js
 └── server.jar
@@ -96,11 +96,11 @@ Here is a base apache config that can be used to achieve this. It assumes you ha
 ```
 
 ### Updating
-To update your server to the latest version of sapphire server, follow these steps:
-1. Delete `sapphire-server.js` & `sapphire-server.json`.
-2. Make `sapphire-server.js` again and populate it with the newer version.
+To update your server to the latest version of cloud core, follow these steps:
+1. Delete `cloud-core.js` & `cloud-core.json`.
+2. Make `cloud-core.js` again and populate it with the newer version.
 3. Make sure your `start.js` file is right by looking at the example one in the repo.
-4. `sapphire-server.json` should create itself again and you should be updated to the latest version.
+4. `cloud-core.json` should create itself again and you should be updated to the latest version.
 
 ### Help
 To get help feel free to message me on discord `Chezzer#6969`.
