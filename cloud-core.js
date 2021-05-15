@@ -209,7 +209,7 @@ class CloudCore extends EventsEmitter {
           if (secs < 10) {
             secs = "0"+secs;
           }
-          connection.sendUTF(`[${hours}:${mins}:${secs} ${type}]: [Cloud Core] ${msg.replace("{REMOTE_IP}", connection.remoteAddress)}`);
+          connection.sendUTF(`[${hours}:${mins}:${secs} ${type}]: [Cloud Core] ${msg}`);
         })
 
         connection.on('message', function(message) {
@@ -252,29 +252,29 @@ class CloudCore extends EventsEmitter {
   send(command) {
     return new Promise((resolve) => {
       if (command == "start" || command == "/start") {
-        messageHandler.emit('message', `Received start command from {REMOTE_IP}. /tINFO`)
+        messageHandler.emit('message', `Received start command. /tINFO`)
         this.start();
         resolve()
       } else if (command == "restart" || command == "/restart") {
-        messageHandler.emit('message', `Received stop command from {REMOTE_IP}. /tINFO`)
+        messageHandler.emit('message', `Received stop command. /tINFO`)
         this.stop();
         setTimeout(() => {
           this.start();
           resolve()
         }, this.config.core.restartTime*1000 || 10000)
       } else if (command == "backup" || command == "/backup") {
-        messageHandler.emit('message', `Received backup command from {REMOTE_IP}. /tINFO`)
+        messageHandler.emit('message', `Received backup command. /tINFO`)
         this.backup();
         resolve();
       } else if (command == "dkill") {
-        messageHandler.emit('message', `Received daemon kill command from {REMOTE_IP}. /tINFO`)
+        messageHandler.emit('message', `Received daemon kill command. /tINFO`)
         this.stop();
         setTimeout(function () {
           resolve()
           process.exit();
         }, this.config.core.restartTime*1000 || 10000);
       } else {
-        messageHandler.emit('message', `Received "${command}" from {REMOTE_IP}. /tINFO`)
+        messageHandler.emit('message', `Received "${command}". /tINFO`)
         this.spawn.stdin.write(`${command}\n`, () => resolve());
       }
     });
