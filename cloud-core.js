@@ -1,4 +1,3 @@
-//* Sapphire Server was originally created for Sapphire Adventures however has since been open sourced at github.com/Sapphire-Connect
 const EventsEmitter = require('events');
 const { spawn, exec } = require('child_process');
 const WebSocketServer = require('websocket').server;
@@ -22,7 +21,7 @@ const defaultConfig = {
   }
 };
 
-class SapphireServer extends EventsEmitter {
+class CloudCore extends EventsEmitter {
   constructor(config) {
     super();
     this.config = config || defaultConfig;
@@ -44,11 +43,11 @@ class SapphireServer extends EventsEmitter {
   }
   
   checkUpdates() {
-    axios.get('https://api.github.com/repos/Sapphire-Connect/sapphire-server/commits?path=sapphire-server.js&per_page=1')
+    axios.get('https://api.github.com/repos/Chezzer-ub/cloud-core/commits?path=cloud-core.js&per_page=1')
       .then(function (response) {
         let data = response.data;
-        if (!fs.existsSync("sapphire-server.json")) {
-            fs.writeFileSync("sapphire-server.json", `
+        if (!fs.existsSync("cloud-core.json")) {
+            fs.writeFileSync("cloud-core.json", `
               {
                 "version": "${data[0].sha}"
               }
@@ -56,14 +55,14 @@ class SapphireServer extends EventsEmitter {
         } else {
           let version = "";
           try {
-            version = JSON.parse(fs.readFileSync("sapphire-server.json"))['version'];
+            version = JSON.parse(fs.readFileSync("cloud-core.json"))['version'];
           } catch (e) {
             console.log(e);
           }
           if (data[0].sha !== version) {
             setTimeout(() => {
-              messageHandler.emit('message', `OUTDATED VERSION! A new version of Sapphire Server is out! Please follow the update instructions on the README. https://github.com/Sapphire-Connect/sapphire-server. /tWARN`)
-              console.log("A new version of Sapphire Server is out! Please follow the update instructions on the README. https://github.com/Sapphire-Connect/sapphire-server")
+              messageHandler.emit('message', `OUTDATED VERSION! A new version of Cloud Core is out! Please follow the update instructions on the README. https://github.com/Chezzer-ub/cloud-core. /tWARN`)
+              console.log("A new version of Cloud Core is out! Please follow the update instructions on the README. https://github.com/Chezzer-ub/cloud-core")
             }, 10000)
           }
         }
@@ -210,7 +209,7 @@ class SapphireServer extends EventsEmitter {
           if (secs < 10) {
             secs = "0"+secs;
           }
-          connection.sendUTF(`[${hours}:${mins}:${secs} ${type}]: [Sapphire Server] ${msg.replace("{REMOTE_IP}", connection.remoteAddress)}`);
+          connection.sendUTF(`[${hours}:${mins}:${secs} ${type}]: [Cloud Core] ${msg.replace("{REMOTE_IP}", connection.remoteAddress)}`);
         })
 
         connection.on('message', function(message) {
@@ -282,5 +281,5 @@ class SapphireServer extends EventsEmitter {
   }
 }
 
-module.exports = SapphireServer;
+module.exports = CloudCore;
 
