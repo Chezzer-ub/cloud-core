@@ -1,12 +1,7 @@
 <center>
-  
-![logo](https://sapphireadventures.net/_assets/_img/logo-art-text.png)
 
-<h2>Sapphire Server</h2>
+<h2>☁ Cloud Core</h2>
 An open-source way to run Minecraft easily on linux using JavaScript.
-
-![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/6xfh.svg)
-</center>
 
 ----
 
