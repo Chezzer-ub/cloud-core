@@ -1,5 +1,5 @@
-const SapphireServer = require('../sapphire-server.js');
-const server = new SapphireServer({
+const CloudCore = require('cloud-core-server');
+const server = new CloudCore({
   core: {
     jar: 'paper-1.16.4-310.jar', //Server Jar Name
     args: ['-Xmx12G', '-Xms12G'], //Server Ram

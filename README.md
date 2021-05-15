@@ -6,21 +6,32 @@ An open-source way to run Minecraft easily on linux using JavaScript.
 ----
 
 ### Install
-Put `cloud-core.js` inside the top folder of all servers you want to control.
-Put `start.js` inside your server folder. Make one for every server you control.
-File path should look like this:
-```
-cloud-core.js
-creative/
-├── start.js
-└── server.jar
-```
-Make sure you have the latest version of [NodeJS](https://nodejs.org/en/) and [Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-debian-10)
 
-Run:
 ```
-npm i events child_process websocket http axios fs
+npm install cloud-core-server
 ```
+
+Then, in the directory of your Minecraft server, make a `start.js` file. Here is some sample code to go in here:
+```
+const CloudCore = require('cloud-core-server');
+const server = new CloudCore({
+  core: {
+    jar: 'paper-1.16.4-310.jar', //Server Jar Name
+    args: ['-Xmx12G', '-Xms12G'], //Server Ram
+    port: 25533, //Minecraft Server Port
+    authorization: "b2x3AqYkjT2T6F5G", //HTTP Auth COde
+    backups: true, //enable the backup feature (backs up the server every week (Alternatively you can do "server.backup()" after "server.start()" at the bottom to back it up immediately OR do /backup in the console))
+    restartTime: 10 //Time in seconds that the server will wait before restarting after a stop or /restart
+  },
+  remote: {
+    port: 35533 //Websocket Port
+  }
+});
+
+server.start();
+```
+
+Make sure you have the latest version of [NodeJS](https://nodejs.org/en/) and [Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-debian-10)
 
 ### How To Start
 Start a server with:
