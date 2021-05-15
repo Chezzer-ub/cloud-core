@@ -1,5 +1,5 @@
 {
-  "name": "cloud-core",
+  "name": "cloud-core-server",
   "version": "1.0.0",
   "description": "An open-source way to run Minecraft easily on linux using JavaScript.",
   "main": "cloud-core.js",
