@@ -13,7 +13,7 @@ An open-source way to run Minecraft easily on linux using JavaScript.
 npm install cloud-core-server
 ```
 
-Then, in the directory of your Minecraft server, make a `start.js` file. [Click here for sample code](blob/main/start.js)
+Then, in the directory of your Minecraft server, make a `start.js` file. [Click here for sample code](https://github.com/Chezzer-ub/cloud-core/blob/main/start.js)
 
 Make sure you have the latest version of [NodeJS](https://nodejs.org/en/) and [Java](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-debian-10)
 
