@@ -21,6 +21,11 @@ const defaultConfig = {
 };
 
 class CloudCore extends EventsEmitter {
+  /**
+   * Create server instance.
+   *
+   * @param {array} config Array of options, help on git.
+   */
   constructor(config) {
     super();
     this.config = config || defaultConfig;
@@ -76,8 +81,8 @@ class CloudCore extends EventsEmitter {
 
   /**
   * Backs up the server into the ./backups directory
-  *
-  * @return {error} x raised to the n-th power.
+  * 
+  * @return {error} Error when backing up.
   */
   backup() {
     let d = new Date();
@@ -103,7 +108,7 @@ class CloudCore extends EventsEmitter {
   /**
    * Starts Minecraft server
    *
-   * @return {javaServer} x raised to the n-th power.
+   * @return {server} Started Minecraft server.
    */
   start() {
     if (this.spawn) this.stop();
@@ -238,7 +243,11 @@ class CloudCore extends EventsEmitter {
 
     return this;
   }
-
+  /**
+   * Stops server
+   *
+   * @return {server} Stopped Minecraft server.
+   */
   stop() {
     messageHandler.emit('message', `Stopping Server. /tINFO`)
     if (this.spawn) {
@@ -263,8 +272,8 @@ class CloudCore extends EventsEmitter {
   /**
    * Sends command to server
    *
-   * @param {string} command The number to raise.
-   * @return {Promise} x raised to the n-th power.
+   * @param {string} command The command to send.
+   * @return {Promise} Promise when command is finished.
    */
   send(command) {
     return new Promise((resolve) => {
@@ -278,7 +287,7 @@ class CloudCore extends EventsEmitter {
         setTimeout(() => {
           this.start();
           resolve()
-        }, this.config.core.restartTime*1000 || 10000)
+        }, this.config.core.restartTime ? this.config.core.restartTime*1000 : 10000)
       } else if (command == "backup" || command == "/backup") {
         messageHandler.emit('message', `Received backup command. /tINFO`)
         this.backup();
