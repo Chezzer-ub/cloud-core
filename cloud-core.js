@@ -41,6 +41,9 @@ class CloudCore extends EventsEmitter {
     this.checkUpdates()
   }
   
+  /**
+   * Checks git repo for updates
+   */
   checkUpdates() {
     axios.get('https://api.github.com/repos/Chezzer-ub/cloud-core/commits?path=cloud-core.js&per_page=1')
       .then(function (response) {
@@ -71,19 +74,25 @@ class CloudCore extends EventsEmitter {
       })
   }
 
+  /**
+  * Backs up the server into the ./backups directory
+  *
+  * @return {error} x raised to the n-th power.
+  */
   backup() {
     let d = new Date();
     let name = d.toString().replace(/ /g, "-").split("-(")[0]+".zip"
-    let backup = exec(`zip -r ${name} * -x *backup*`, {maxBuffer: 1024 * 999999999}, (error, stdout, stderr) => {
+    let backup = exec(`zip -r ${name} * -x *backup*`, {maxBuffer: 1024 * 999999999}, (error) => {
     //let backup = exec(`cd..;sleep 10;ls`, (error, stdout, stderr) => {
       if (error) {
         console.log(error.stack);
         console.log('Error code: '+error.code);
         console.log('Signal received: '+error.signal);
+        return error;
       }
     });
     
-    backup.on('exit', function (code) {
+    backup.on('exit', () => {
       setTimeout(() => {
         exec(`mv ${name} backup/${name}`, {maxBuffer: 1024 * 999999999})
       }, 2000)
@@ -91,7 +100,11 @@ class CloudCore extends EventsEmitter {
       messageHandler.emit('message', `Made backup of whole server (${name}). /tINFO`)
     });
   }
-
+  /**
+   * Starts Minecraft server
+   *
+   * @return {javaServer} x raised to the n-th power.
+   */
   start() {
     if (this.spawn) this.stop();
     messageHandler.emit('message', `Starting Server. /tINFO`)
@@ -247,7 +260,12 @@ class CloudCore extends EventsEmitter {
 
     return this;
   }
-
+  /**
+   * Sends command to server
+   *
+   * @param {string} command The number to raise.
+   * @return {Promise} x raised to the n-th power.
+   */
   send(command) {
     return new Promise((resolve) => {
       if (command == "start" || command == "/start") {
