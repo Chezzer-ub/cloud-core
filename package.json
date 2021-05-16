@@ -1,6 +1,6 @@
 {
   "name": "cloud-core-server",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "An open-source way to run Minecraft easily on linux using JavaScript.",
   "main": "cloud-core.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Chezzer-ub/cloud-core.git"
+    "url": "git://github.com/Chezzer-ub/cloud-core.git"
   },
   "keywords": [
     "minecraft",
@@ -31,5 +31,8 @@
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "websocket": "^1.0.34"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
   }
 }
