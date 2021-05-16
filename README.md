@@ -3,6 +3,8 @@
 <h2>☁ Cloud Core</h2>
 An open-source way to run Minecraft easily on linux using JavaScript.
 
+
+[![CodeFactor](https://www.codefactor.io/repository/github/chezzer-ub/cloud-core/badge/main)](https://www.codefactor.io/repository/github/chezzer-ub/cloud-core/overview/main)
 ----
 
 ### Install
