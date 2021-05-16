@@ -29,7 +29,7 @@ class CloudCore extends EventsEmitter {
   constructor(config) {
     super();
     this.config = config || defaultConfig;
-    serverConfig = config;
+    this.messageHandler = messageHandler
     this.modules = [];
 
     process.on('exit', () => this.stop());
