@@ -111,7 +111,10 @@ class CloudCore extends EventsEmitter {
    * @return {server} Started Minecraft server.
    */
   start() {
-    if (this.spawn) this.stop();
+    if (this.spawn) {
+      messageHandler.emit('message', `Server already started. /tERROR`)
+      return false;
+    };
     messageHandler.emit('message', `Starting Server. /tINFO`)
     console.log("Starting server, please wait...")
 
@@ -285,6 +288,7 @@ class CloudCore extends EventsEmitter {
         messageHandler.emit('message', `Received stop command. /tINFO`)
         this.stop();
         setTimeout(() => {
+          this.spawn.kill();
           this.start();
           resolve()
         }, this.config.core.restartTime ? this.config.core.restartTime*1000 : 10000)
