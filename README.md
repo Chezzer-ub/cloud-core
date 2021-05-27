@@ -5,6 +5,9 @@ An open-source way to run Minecraft easily on linux using JavaScript.
 
 
 [![CodeFactor](https://www.codefactor.io/repository/github/chezzer-ub/cloud-core/badge/main)](https://www.codefactor.io/repository/github/chezzer-ub/cloud-core/overview/main)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8b5b0bddfd291e174cf0/maintainability)](https://codeclimate.com/github/Chezzer-ub/cloud-core/maintainability)
+[![npm bundle size](https://img.shields.io/bundlephobia/min/cloud-core-server)](http://npmjs.com/package/cloud-core-server)
+[![npm](https://img.shields.io/npm/dt/cloud-core-server)](http://npmjs.com/package/cloud-core-server)
 ----
 
 ### Install
