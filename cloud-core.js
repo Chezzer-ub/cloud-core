@@ -288,6 +288,7 @@ class CloudCore extends EventsEmitter {
         messageHandler.emit('message', `Received stop command. /tINFO`)
         this.stop();
         setTimeout(() => {
+          this.kill();
           this.start();
           resolve()
         }, this.config.core.restartTime ? this.config.core.restartTime*1000 : 10000)
