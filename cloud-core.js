@@ -161,25 +161,21 @@ class CloudCore extends EventsEmitter {
             });
             res.end();
           } else {
-            if (fs.existsSync("logs/latest.log")) {
-              let last = [];
-              const log = fs.readFileSync("logs/latest.log", "utf8");
-              const lines = log.split(/\r?\n/);
-              lines.forEach((line, i) => {
-                const index = lines.length-i;
-                if (index >= lines.length-100) {
-                  if (lines[index]) {
-                    last.push(lines[index]);
-                  }
-                }
+            if (req.query.request == "usage") {
+              var usage = require('usage');
+              let pid = this.spawn.pid
+              
+              usage.lookup(pid, function(err, result) {
+                res.end(JSON.stringify(result));
               });
-            
-              let response = "";
-              last.reverse()
-              last.forEach((item) => {
-                response += `${item}\n`;
-              })
-              res.write(response)
+            } else {
+              if (fs.existsSync("logs/latest.log")) {
+                const log = fs.readFileSync("logs/latest.log", "utf8");
+                res.write(log);
+                res.end();
+              } else {
+                res.end();
+              }
             }
           }
         } else {
