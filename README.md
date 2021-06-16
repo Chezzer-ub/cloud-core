@@ -142,6 +142,8 @@ You can also start multiple servers using pm2.
 
 [3. Open websocket to any URL.](#access-3)
 
+[How to start & stop](#authentication).
+
 Make sure you follow [**authentication**](#authentication) rules.
 
 Also have a look at [proxying your webserver](#proxy) to ensure security.
@@ -190,8 +192,16 @@ webSocket.onmessage = (message) => {
     console.log(line)
 };
 
-webSocket.send(JSON.stringify({"command": "command here", "user": "optional user here"}))
+webSocket.send(JSON.stringify({"action": "command", "command": "command here", "user": "optional user here"}))
 ```
+
+<h4>Starting & Stopping</h4>
+
+In the websocket, specify the `action` field as either: `start`, `stop`, `restart` or `kill`.
+In HTTP, specify the `command` field as either `start`, `stop` or `restart`. 
+
+Note: You can still pass the `user` field.
+
 
 <h4 id="authentication">Authentication</h4>
 
