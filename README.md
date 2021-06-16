@@ -282,6 +282,11 @@ server.on("event name", (params) => {
     <td></td>
   </tr>
   <tr>
+    <td>started</td>
+    <td>When the server has finshed starting.</td>
+    <td></td>
+  </tr>
+  <tr>
     <td>stopping</td>
     <td>When server tries to stop.</td>
     <td></td>
