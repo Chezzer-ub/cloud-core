@@ -136,17 +136,19 @@ You can also start multiple servers using pm2.
 
 ### Accessing
 
-[1. HTTP GET request to any URL to get the last 100 lines of the console.](#access-1)
+[HTTP GET request to any URL to get the last 100 lines of the console.](#access-1)
 
-[2. HTTP POST request to any URL to send a command.](#access-2)
+[HTTP POST request to any URL to send a command.](#access-2)
 
-[3. Open websocket to any URL.](#access-3)
+[Open websocket to any URL.](#access-3)
 
-[How to start & stop](#start).
+[Start & stop](#start).
 
 Make sure you follow [**authentication**](#authentication) rules.
 
 Also have a look at [proxying your webserver](#proxy) to ensure security.
+
+[Getting CPU & RAM Usage](#usage).
 
 <h4 id="access-1">Get console</h4>
 
@@ -218,6 +220,22 @@ It is highly recommended that you proxy your webserver as this does not support 
 [Setting up NGINX as your proxy server with NodeJS apps](https://blog.codingblocks.com/2019/setting-up-nginx-as-your-proxy-server-with-nodejs-apps/)
 
 [How to Setup Apache As Frontend Proxy for Node.js](https://tecadmin.net/apache-frontend-proxy-nodejs/)
+
+<h4 id="usage">Usage HTTP API</h4>
+
+Make a GET request to `/usage` to return a json array of the server's current CPU load and ram.
+
+```PHP
+$context = [
+  "http" => [
+      "method" => "GET",
+      "header" => "Authorization: <auth code here>"
+  ]
+];
+
+$usage = file_get_contents("http://localhost:35565/usage", false, stream_context_create($context))
+$usage = json_decode($usage, true);
+```
 
 ### API
 
