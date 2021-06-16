@@ -206,5 +206,108 @@ It is highly recommended that you proxy your webserver as this does not support 
 
 [How to Setup Apache As Frontend Proxy for Node.js](https://tecadmin.net/apache-frontend-proxy-nodejs/)
 
+### API
+
+[Events](#events)
+[Methods](#methods)
+
+<h4 id="events">Events</h4>
+
+Register an event by doing:
+
+```JavaScript
+server.on("event name", (params) => {
+  // do stuff
+})
+```
+
+<table>
+  <tr>
+    <th>Event Name</th>
+    <th>Description</th>
+    <th>Parameters</th>
+  </tr>
+  <tr>
+    <td>ready</td>
+    <td>Ready to start server.</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>command</td>
+    <td>When a command is executed from either the web or websocket.</td>
+    <td>command</td>
+  </tr>
+  <tr>
+    <td>console</td>
+    <td>When the server returns a console line. NOTE: If you emit this event, it will return whatever text you pass to the websocket.</td>
+    <td>line</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>When the server is started.</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>stopping</td>
+    <td>When server tries to stop.</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>stop</td>
+    <td>When server fully stops.</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>backup</td>
+    <td>When server is backed up, includes filepath to zip file.</td>
+    <td>path</td>
+  </tr>
+</table>
+
+<h4 id="methods">Methods</h4>
+
+<table>
+  <tr>
+    <th>Method Name</th>
+    <th>Description</th>
+    <th>Parameters</th>
+  </tr>
+  <tr>
+    <td>server.start()</td>
+    <td>Starts server.</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>server.stop(<Function>)</td>
+    <td>Tries to stop server and executes callback when fully stopped.</td>
+    <td>Callback Function</td>
+  </tr>
+  <tr>
+    <td>server.send(<String>)</td>
+    <td>Sends a command to the server.</td>
+    <td>Command to send</td>
+  </tr>
+  <tr>
+    <td>server.backup()</td>
+    <td>Backs up the server reguardless of having backups enabled.</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>server.wsServer</td>
+    <td>Access websocket server [Websocket Module](https://www.npmjs.com/package/ws).</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>server.httpServer</td>
+    <td>Returns running express server</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>server.minecraftServer</td>
+    <td>Returns child process spawn running the server. (Advanced Users Only)</td>
+    <td></td>
+  </tr>
+</table>
+
 ### Help
 To get help feel free to message me on discord `Chezzer#6969`.
