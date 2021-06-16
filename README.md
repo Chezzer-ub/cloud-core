@@ -198,6 +198,7 @@ webSocket.send(JSON.stringify({"action": "command", "command": "command here", "
 <h4>Starting & Stopping</h4>
 
 In the websocket, specify the `action` field as either: `start`, `stop`, `restart` or `kill`.
+
 In HTTP, specify the `command` field as either `start`, `stop` or `restart`. 
 
 Note: You can still pass the `user` field.
