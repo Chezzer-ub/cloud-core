@@ -271,6 +271,8 @@ class CloudCore extends Events {
       })
       //start event
       this.emit("start");
+    } else {
+      this.emit("console", "[Cloud Core] Server already started!")
     }
     return this.minecraftServer;
   }
@@ -293,7 +295,7 @@ class CloudCore extends Events {
           this.minecraftServer.kill();
         }
         this.minecraftServer = null;
-        
+
         if (callback) {
           callback();
         }
