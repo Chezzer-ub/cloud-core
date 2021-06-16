@@ -1,6 +1,6 @@
 {
   "name": "cloud-core-server",
-  "version": "1.1.3",
+  "version": "2.0.0",
   "description": "An open-source way to run Minecraft easily on linux using JavaScript.",
   "main": "cloud-core.js",
   "scripts": {
@@ -28,8 +28,12 @@
     "axios": "^0.21.1",
     "child_process": "^1.0.2",
     "events": "^3.3.0",
-    "fs": "^0.0.1-security",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "http": "^0.0.1-security",
-    "websocket": "^1.0.34"
-  }
+    "usage": "^0.7.1",
+    "websocket": "^1.0.34",
+    "ws": "^7.4.6"
+  },
+  "devDependencies": {}
 }
