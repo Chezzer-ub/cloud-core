@@ -75,6 +75,7 @@ You need to configure most of the options, download the `example-start.js` file 
   </tr>
 </table>
 
+
 `core.backups:`
 <table>
   <tr>
@@ -98,6 +99,7 @@ You need to configure most of the options, download the `example-start.js` file 
     <td>"./backup/"</td>
   </tr>
 </table>
+
 
 `remote:`
 <table>
