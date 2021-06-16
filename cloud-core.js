@@ -289,8 +289,11 @@ class CloudCore extends Events {
       this.minecraftServer.stdin.write("stop\n");
       this.minecraftServer.on('exit', () => {
         //on exit
-        this.minecraftServer.kill();
+        if (this.minecraftServer) {
+          this.minecraftServer.kill();
+        }
         this.minecraftServer = null;
+        
         if (callback) {
           callback();
         }
