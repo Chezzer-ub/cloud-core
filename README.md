@@ -209,6 +209,7 @@ It is highly recommended that you proxy your webserver as this does not support 
 ### API
 
 [Events](#events)
+
 [Methods](#methods)
 
 <h4 id="events">Events</h4>
