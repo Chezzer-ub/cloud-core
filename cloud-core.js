@@ -272,7 +272,7 @@ class CloudCore extends Events {
       //start event
       this.emit("start");
     } else {
-      this.emit("console", "[Cloud Core] Server already started!")
+      this.log ("[Cloud Core] Server already started!")
     }
     return this.minecraftServer;
   }
