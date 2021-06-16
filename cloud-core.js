@@ -92,14 +92,16 @@ class CloudCore extends Events {
         } else if (message.action == "start") {
           this.log(`[Cloud Core] ${usertext}Starting the server...`);
           this.start();
+        } else if (message.action == "ping") {
+          socket.send("pong");
         }
       });
 
       //send console to client
       this.on("console", (line) => {
-	if (line.includes("Done (")) {
-	  this.emit("started");
-	}
+        if (line.includes("Done (")) {
+          this.emit("started");
+        }
         socket.send(line);
       })
     });
