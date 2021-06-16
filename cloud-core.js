@@ -97,6 +97,9 @@ class CloudCore extends Events {
 
       //send console to client
       this.on("console", (line) => {
+	if (line.includes("Done (")) {
+	  this.emit("started");
+	}
         socket.send(line);
       })
     });
