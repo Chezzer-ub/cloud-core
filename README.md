@@ -295,7 +295,7 @@ server.on("event name", (params) => {
   </tr>
   <tr>
     <td>server.wsServer</td>
-    <td>Access websocket server [Websocket Module](https://www.npmjs.com/package/ws).</td>
+    <td>Access websocket server <a href="https://www.npmjs.com/package/ws">Websocket Module</a>.</td>
     <td></td>
   </tr>
   <tr>
