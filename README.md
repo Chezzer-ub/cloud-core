@@ -142,7 +142,7 @@ You can also start multiple servers using pm2.
 
 [3. Open websocket to any URL.](#access-3)
 
-[How to start & stop](#authentication).
+[How to start & stop](#start).
 
 Make sure you follow [**authentication**](#authentication) rules.
 
@@ -195,7 +195,7 @@ webSocket.onmessage = (message) => {
 webSocket.send(JSON.stringify({"action": "command", "command": "command here", "user": "optional user here"}))
 ```
 
-<h4>Starting & Stopping</h4>
+<h4 id="start">Starting & Stopping</h4>
 
 In the websocket, specify the `action` field as either: `start`, `stop`, `restart` or `kill`.
 
