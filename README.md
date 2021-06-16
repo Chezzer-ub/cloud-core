@@ -197,6 +197,8 @@ webSocket.onmessage = (message) => {
 webSocket.send(JSON.stringify({"action": "command", "command": "command here", "user": "optional user here"}))
 ```
 
+**Important Note:** You must have a ping/pong event every ~10 seconds to keep the websocket connection alive. To do this put `ping` for the `action` field. The server will return a `pong` in raw text. I advise you to have an if statement to make sure you filter it out.
+
 <h4 id="start">Starting & Stopping</h4>
 
 In the websocket, specify the `action` field as either: `start`, `stop`, `restart` or `kill`.
