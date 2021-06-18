@@ -18,6 +18,7 @@ class CloudCore extends Events {
     //construct config with default values
     const defaultConfig = {
       core: {
+        prefix: config.core.prefix || '',
         jar: config.core.jar || 'server.jar',
         args: config.core.args || ['-Xmx2G', '-Xms1G'],
         authorization: config.core.authorization || "hackme",
@@ -250,7 +251,7 @@ class CloudCore extends Events {
       args = args.concat('--port', this.config.core.port, 'nogui');
       
       //start server
-      this.minecraftServer = spawn('java', args);
+      this.minecraftServer = spawn(this.config.core.prefix+'java', args);
       
       //minecraft to console
       this.minecraftServer.stdout.pipe(process.stdout);
