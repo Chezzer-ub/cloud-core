@@ -1,4 +1,4 @@
-const CloudCore = require("./cloud-core-dev.js");
+const CloudCore = require("cloud-core-server");
 const server = new CloudCore({
   core: {
     jar: "paper-1.16.5-708.jar",
