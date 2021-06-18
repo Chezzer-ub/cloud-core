@@ -257,6 +257,10 @@ class CloudCore extends Events {
       
       //console to minecraft
       process.stdin.pipe(this.minecraftServer.stdin);
+
+      process.stderr.on('data', (data) => {
+        this.log(`ERROR: ${data}`);
+      });
       
       //minecraft to event
       this.minecraftServer.stdout.on('data', (d) => {
