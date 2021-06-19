@@ -151,10 +151,10 @@ class CloudCore extends Events {
 
     app.get("*/usage", (req, res) => {
       res.type("json");
+      let config = this.config;
       if (this.minecraftServer) {
         usage.lookup(this.minecraftServer.pid, function(err, result) {
           if (!err) {
-            let config = this.config;
             delete config.core.authorization;
             result.config = config;
             res.end(JSON.stringify(result));
