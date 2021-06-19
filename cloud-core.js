@@ -155,7 +155,6 @@ class CloudCore extends Events {
       if (this.minecraftServer) {
         usage.lookup(this.minecraftServer.pid, function(err, result) {
           if (!err) {
-            delete config.core.authorization;
             result.config = config;
             res.end(JSON.stringify(result));
           } else {
