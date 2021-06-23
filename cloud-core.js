@@ -18,6 +18,7 @@ class CloudCore extends Events {
     //construct config with default values
     const defaultConfig = {
       core: {
+	path: config.core.path || './',
         prefix: config.core.prefix || '',
         jar: config.core.jar || 'server.jar',
         args: config.core.args || ['-Xmx2G', '-Xms1G'],
@@ -253,7 +254,7 @@ class CloudCore extends Events {
       args = args.concat('--port', this.config.core.port, 'nogui');
       
       //start server
-      this.minecraftServer = spawn(this.config.core.prefix+'java', args);
+      this.minecraftServer = spawn(this.config.core.prefix+'java', args, [cwd: this.config.core.path]);
       
       //minecraft to console
       this.minecraftServer.stdout.pipe(process.stdout);
@@ -279,7 +280,7 @@ class CloudCore extends Events {
       //start event
       this.emit("start");
     } else {
-      this.log ("[Cloud Core] Server already started!")
+      this.log("[Cloud Core] Server already started!")
     }
     return this.minecraftServer;
   }
