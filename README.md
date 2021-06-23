@@ -54,6 +54,11 @@ You need to configure most of the options, download the `example-start.js` file 
     <th>Default Value</th>
   </tr>
   <tr>
+    <td>prefix</td>
+    <td>Path to add at the start of the java command, this is useful for switching java version for specified servers. E.g. "/usr/lib/jvm/jdk-16.0.1/bin/" to use java 16. MAKE SURE STRING ENDS WITH /</td>
+    <td>""</td>
+  </tr>
+  <tr>
     <td>jar</td>
     <td>Main java file for the server.</td>
     <td>"server.jar"</td>
