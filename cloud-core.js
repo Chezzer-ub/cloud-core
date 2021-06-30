@@ -342,7 +342,7 @@ class CloudCore extends Events {
     
     backup.on('exit', () => {
       this.emit("backup", `${this.config.core.backups.directory}${name}`);
-      this.log("logs/latest.log", `[Cloud Core] Made backup (${this.config.core.backups.directory}${name})`)
+      this.log(`[Cloud Core] Made backup (${this.config.core.backups.directory}${name})`);
     });
   }
 }
