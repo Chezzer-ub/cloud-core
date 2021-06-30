@@ -258,7 +258,7 @@ class CloudCore extends Events {
       args = args.concat('--port', this.config.core.port, 'nogui');
       
       //start server
-      this.minecraftServer = spawn(this.config.core.prefix+'java', args, [cwd: this.config.core.path]);
+      this.minecraftServer = spawn(this.config.core.prefix+'java', args, {cwd: this.config.core.path});
       
       //minecraft to console
       this.minecraftServer.stdout.pipe(process.stdout);
