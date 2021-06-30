@@ -94,6 +94,8 @@ class CloudCore extends Events {
         } else if (message.action == "start") {
           this.log(`[Cloud Core] ${usertext}Starting the server...`);
           this.start();
+        } else if (message.action == "backup") {
+          this.backup();
         } else if (message.action == "ping") {
           socket.send("pong");
         }
@@ -139,6 +141,8 @@ class CloudCore extends Events {
             this.log(`[Cloud Core] Starting the server...`);
             this.start();
           });
+        } else if (req.body.command == "backup") {
+          this.backup();
         } else if (req.body.command == "start") {
           this.start();
         } else {
