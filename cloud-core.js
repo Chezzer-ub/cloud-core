@@ -285,6 +285,11 @@ class CloudCore extends Events {
       })
       //start event
       this.emit("start");
+
+      if (!fs.existsSync("eula.txt")) {
+        fs.writeFileSync("eula.txt", "eula=true");
+        this.log("[Cloud Core] Automatically agreed to EULA.");
+      }
     } else {
       this.log("[Cloud Core] Server already started!")
     }
