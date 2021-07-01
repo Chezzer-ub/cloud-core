@@ -224,7 +224,9 @@ class CloudCore extends Events {
   }
 
   log(msg) {
-    fs.appendFileSync("logs/latest.log", `${msg}\n`);
+    if (fs.existsSync("logs/latest.log")) {
+      fs.appendFileSync("logs/latest.log", `${msg}\n`);
+    }
     this.emit('console', msg);
     console.log(msg);
   }
