@@ -75,6 +75,8 @@ class CloudCore extends Events {
           this.stop(() => {
             this.log(`[Cloud Core] Successfully stopped the server`);
           });
+        } else if (message.action == "clearSessionLock") {
+          clearSessionLock()
         } else if (message.action == "kill") {
           this.log(`[Cloud Core] ${usertext}Attempting to stop the server...`);
           this.stop(() => {
@@ -354,6 +356,19 @@ class CloudCore extends Events {
     backup.on('exit', () => {
       this.emit("backup", `${this.config.core.backups.directory}${name}`);
       this.log(`[Cloud Core] Made backup (${this.config.core.backups.directory}${name})`);
+    });
+  }
+
+  clearSessionLock() {
+    let sessionClear = exec('find -type f -name "session.lock" -delete', (error) => {
+      if (error) {
+        this.log(`[Cloud Core] Error: ${error.code}`);
+        console.log(error.stack);
+      }
+    })
+
+    sessionClear.on('exit', () => {
+      this.log(`[Cloud Core] Cleared session lock on all worlds.`);
     });
   }
 }
