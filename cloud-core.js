@@ -340,8 +340,11 @@ class CloudCore extends Events {
     let d = new Date();
     let name = d.toString().replace(/ /g, "-").split("-(")[0]+".zip";
     this.log(`[Cloud Core] Starting server backup...`);
-    let backup = exec(`zip -r ${this.config.core.backups.directory}${name} * -x backup/*`, {maxBuffer: 1024 * 999999999}, (error, stdout) => {
+    let backup = exec(`zip -r ${this.config.core.backups.directory}${name} * -x backup/*`, {maxBuffer: 1024 * 999999999}, (error, stdout, stderr) => {
       this.log(stdout);
+      if (stderr) {
+        this.log(`[Cloud Core] Backup Error: ${stderr}`);
+      }
       if (error) {
         this.log(`[Cloud Core] Backup Error: ${error.code}`);
         console.log(error.stack);
