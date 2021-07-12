@@ -76,7 +76,7 @@ class CloudCore extends Events {
             this.log(`[Cloud Core] Successfully stopped the server`);
           });
         } else if (message.action == "clearSessionLock") {
-          clearSessionLock()
+          this.clearSessionLock()
         } else if (message.action == "kill") {
           this.log(`[Cloud Core] ${usertext}Attempting to stop the server...`);
           this.stop(() => {
