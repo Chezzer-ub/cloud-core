@@ -3,6 +3,7 @@ const { spawn, exec } = require('child_process');
 const express = require('express');
 const ws = require('ws');
 const fs = require('fs');
+const usage = require('usage');
 
 class CloudCore extends Events {
   /**
@@ -17,8 +18,8 @@ class CloudCore extends Events {
     //construct config with default values
     const defaultConfig = {
       core: {
-	      path: config.core.path || './',
-        java_path: config.core.java_path || '',
+	path: config.core.path || './',
+        prefix: config.core.prefix || '',
         jar: config.core.jar || 'server.jar',
         args: config.core.args || ['-Xmx2G', '-Xms1G'],
         authorization: config.core.authorization || "hackme",
@@ -27,11 +28,11 @@ class CloudCore extends Events {
           directory: config.core.backups.directory || "./backup/",
           time: config.core.backups.time || "weekly" //can be "weekly", "monthly"
         },
-        port: config.core.server_port || 25565
+        port: config.core.port || 25565
       },
       remote: {
         bind: config.remote.bind || "0.0.0.0",
-        webserver_port: config.remote.webserver_port || 35565
+        port: config.remote.port || 35565
       }
     };
 
@@ -52,9 +53,6 @@ class CloudCore extends Events {
     });
 
     this.wsServer = new ws.Server({ noServer: true });
-    this.wsServer.on('error', function (err) {
-      this.log("[Cloud Core] "+err)
-    });
     this.wsServer.on('connection', socket => {
       //receive command from client
       socket.on('message', (message) => {
@@ -158,31 +156,22 @@ class CloudCore extends Events {
       }
     })
 
-    var usage;
-
-    try {
-      usage = require('usage');
-      app.get("*/usage", (req, res) => {
-        res.type("json");
-        let config = this.config;
-        if (this.minecraftServer) {
-          usage.lookup(this.minecraftServer.pid, function(err, result) {
-            if (!err) {
-              result.config = config;
-              res.end(JSON.stringify(result));
-            } else {
-              res.end(JSON.stringify({"error": err}));
-            }
-          });
-        } else {
-          res.end(JSON.stringify({"error": "Server not started"}));
-        }
-      })
-    } catch (e) {
-      if (e.code == "MODULE_NOT_FOUND") {
-        this.log("[Cloud Core] Usage module not found, looks like your on an unsupported system, usage stats WILL NOT BE AVAILABLE");
+    app.get("*/usage", (req, res) => {
+      res.type("json");
+      let config = this.config;
+      if (this.minecraftServer) {
+        usage.lookup(this.minecraftServer.pid, function(err, result) {
+          if (!err) {
+            result.config = config;
+            res.end(JSON.stringify(result));
+          } else {
+            res.end(JSON.stringify({"error": err}));
+          }
+        });
+      } else {
+        res.end(JSON.stringify({"error": "Server not started"}));
       }
-    }
+    })
 
     app.get("*", (req, res) => {
       const readLastLines = require('read-last-lines');
@@ -193,8 +182,8 @@ class CloudCore extends Events {
     })
 
     //listen on server
-    this.httpServer = app.listen(config.core.remote.webserver_port, config.remote.bind || "0.0.0.0", () => {
-      this.log(`[Cloud Core] Started webserver running on ${config.remote.bind || "0.0.0.0"}:${config.core.remote.webserver_port}`)
+    this.httpServer = app.listen(config.remote.port, config.remote.bind || "0.0.0.0", () => {
+      this.log(`[Cloud Core] Started webserver running on ${config.remote.bind || "0.0.0.0"}:${config.remote.port}`)
     });
 
     //upgrade websocket requests
@@ -237,8 +226,8 @@ class CloudCore extends Events {
   }
 
   log(msg) {
-    if (fs.existsSync(this.path+"logs/latest.log")) {
-      fs.appendFileSync(this.path+"logs/latest.log", `${msg}\n`);
+    if (fs.existsSync("logs/latest.log")) {
+      fs.appendFileSync("logs/latest.log", `${msg}\n`);
     }
     this.emit('console', msg);
     console.log(msg);
@@ -270,10 +259,10 @@ class CloudCore extends Events {
     if (!this.minecraftServer) {
       //make args
       let args = this.config.core.args.concat('-jar', this.config.core.jar);
-      args = args.concat('--port', this.config.core.server_port, 'nogui');
+      args = args.concat('--port', this.config.core.port, 'nogui');
       
       //start server
-      this.minecraftServer = spawn(this.config.core.java_path+'java', args, {cwd: this.config.core.path});
+      this.minecraftServer = spawn(this.config.core.prefix+'java', args, {cwd: this.config.core.path});
       
       //minecraft to console
       this.minecraftServer.stdout.pipe(process.stdout);
@@ -299,8 +288,8 @@ class CloudCore extends Events {
       //start event
       this.emit("start");
 
-      if (!fs.existsSync(this.path+"eula.txt")) {
-        fs.writeFileSync(this.path+"eula.txt", "eula=true");
+      if (!fs.existsSync("eula.txt")) {
+        fs.writeFileSync("eula.txt", "eula=true");
         this.log("[Cloud Core] Automatically agreed to EULA.");
       }
     } else {
@@ -347,8 +336,8 @@ class CloudCore extends Events {
    * Backup the whole server.
    */
   backup() {
-    if (!fs.existsSync(this.path+this.config.core.backups.directory)) {
-      fs.mkdirSync(this.path+this.config.core.backups.directory);
+    if (!fs.existsSync(this.config.core.backups.directory)) {
+      fs.mkdirSync(this.config.core.backups.directory);
     }
     let d = new Date();
     let name = d.toString().replace(/ /g, "-").split("-(")[0]+".zip";
