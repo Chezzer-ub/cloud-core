@@ -3,7 +3,6 @@ const { spawn, exec } = require('child_process');
 const express = require('express');
 const ws = require('ws');
 const fs = require('fs');
-const usage = require('usage');
 
 class CloudCore extends Events {
   /**
@@ -18,7 +17,7 @@ class CloudCore extends Events {
     //construct config with default values
     const defaultConfig = {
       core: {
-	path: config.core.path || './',
+	      path: config.core.path || './',
         prefix: config.core.prefix || '',
         jar: config.core.jar || 'server.jar',
         args: config.core.args || ['-Xmx2G', '-Xms1G'],
@@ -160,14 +159,19 @@ class CloudCore extends Events {
       res.type("json");
       let config = this.config;
       if (this.minecraftServer) {
-        usage.lookup(this.minecraftServer.pid, function(err, result) {
-          if (!err) {
-            result.config = config;
-            res.end(JSON.stringify(result));
-          } else {
-            res.end(JSON.stringify({"error": err}));
-          }
-        });
+        if (this.moduleAvailable("usage")) {
+          const usage = require('usage');
+          usage.lookup(this.minecraftServer.pid, function(err, result) {
+            if (!err) {
+              result.config = config;
+              res.end(JSON.stringify(result));
+            } else {
+              res.end(JSON.stringify({"error": err}));
+            }
+          });
+        } else {
+          res.end(JSON.stringify({"error": "Install the usage module by doing 'npm install usage' inside the same directory the server is in. This is not supported on windows!"}));
+        }
       } else {
         res.end(JSON.stringify({"error": "Server not started"}));
       }
@@ -223,6 +227,14 @@ class CloudCore extends Events {
     }, 500)
 
     return this;
+  }
+
+  moduleAvailable(name) {
+    try {
+        require.resolve(name);
+        return true;
+    } catch(e){}
+    return false;
   }
 
   log(msg) {
