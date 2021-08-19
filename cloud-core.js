@@ -116,7 +116,7 @@ class CloudCore extends Events {
     app.use(express.json());
 
     //define api routes
-    app.get("*", (req, res, next) => {
+    app.use("*", (req, res, next) => {
       res.set('Access-Control-Allow-Origin', '*');
       if (req.headers['authorization'] == config.core.authorization) {
         next();
