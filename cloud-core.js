@@ -44,11 +44,9 @@ class CloudCore extends Events {
 
     process.on('exit', () => {
       this.stop()
-      if (this.minecraftServer) this.minecraftServer.kill();
     });
     process.on('close', () => {
       this.stop()
-      if (this.minecraftServer) this.minecraftServer.kill();
     });
 
     this.wsServer = new ws.Server({ noServer: true });
@@ -321,7 +319,7 @@ class CloudCore extends Events {
     //stop server
     if (this.minecraftServer) {
       //write stop command
-      this.minecraftServer.stdin.write("stop\n");
+      this.minecraftServer.kill('SIGINT');
       this.minecraftServer.on('exit', () => {
         //on exit
         if (this.minecraftServer) {
